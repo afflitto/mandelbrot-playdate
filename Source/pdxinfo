@@ -1,0 +1,8 @@
+name=Mandelbrot
+author=Andrew Afflitto
+description=A heart-shaped box of springs and wires!
+bundleID=tech.afflitto.mandelbrot
+version=0.1.0
+buildNumber=0
+pdxversion=11000
+buildtime=704673769
