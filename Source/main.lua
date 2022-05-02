@@ -16,8 +16,9 @@ local tiles_y <const> = 16
 local tile_width <const> = playdate.display.getWidth() / tiles_x	
 local tile_height <const> = playdate.display.getHeight() / tiles_y	
 
-local max_iteration = 50
-local show_debug = true
+local max_iteration = 100
+local show_debug = false
+local slowest_elapsed = 0
 
 
 function setup()
@@ -49,30 +50,41 @@ function setup()
 			print(i, j, tile_min_x, tile_max_x, tile_min_y, tile_max_y)
 		end
 	end
+
+	print("testing C call")
+	c_test()
 end
 setup()
 
 function playdate.update()
-	local idx = math.floor(counter / 1) % (tiles_x * tiles_y)
-	local tile = tiles[idx + 1]
-	local x, y = index_to_xy(idx)
+	-- local idx = math.floor(counter / 1) % (tiles_x * tiles_y)
+	-- local tile = tiles[idx + 1]
+	-- local x, y = index_to_xy(idx)
+	local x = 0
+	local y = 0
 
-	tile:render(max_iteration)
-	tile.buffer:draw(x, y)
+	playdate.resetElapsedTime()
+	-- tile:render(max_iteration)
+	-- tile:crender(max_iteration)
+	-- tile.buffer:draw(x, y)
+	for i=1,(tiles_x*tiles_y) do
+		local tile = tiles[i]
+		x, y = index_to_xy(i)
+		tile:crender(max_iteration)
+		tile.buffer:draw(x, y)
+	end
+
+	local elapsed = playdate.getElapsedTime()
+	if elapsed > slowest_elapsed then
+		slowest_elapsed = elapsed
+		print("new slowest elapsed=", slowest_elapsed)	
+	end
 
 	counter += 1
 	gfx.setColor(gfx.kColorWhite)
 	gfx.fillRect(0, 0, 150, 20)
 	gfx.setColor(gfx.kColorBlack)	
 	if show_debug then
-		-- Draw box around next tile to be updated
-		local next_idx = math.floor(counter / 1) % (tiles_x * tiles_y)
-		x, y = index_to_xy(next_idx)
-		gfx.setColor(gfx.kColorBlack)
-		gfx.fillRect(x, y, tile_width, tile_height)
-		gfx.setColor(gfx.kColorWhite)
-		gfx.fillRect(x+1, y+1, tile_width-2, tile_height-2)
-
 		-- Draw max_iteration text
 		gfx.drawText(string.format("max__iteration=%d", max_iteration), 0, 0)
 

@@ -62,6 +62,10 @@ function Tile:render(max_iteration)
 	gfx.popContext()
 end
 
+function Tile:crender(max_iteration)
+	c_render_region(self.buffer, self.min_x, self.min_y, self.max_x, self.max_y, max_iteration, math.floor(max_iteration/2))
+end
+
 function scale(fullMin, fullMax, scaleMin, scaleMax, val)
 	local fullDelta = fullMax - fullMin
 	local ret = (val - fullMin) / fullDelta
