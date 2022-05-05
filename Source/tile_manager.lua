@@ -2,6 +2,7 @@ import "CoreLibs/object"
 import "camera"
 import "tile"
 
+local overlap <const> = 0.01
 
 class("TileManager").extends("Camera")
 function TileManager:init(minX, minY, maxX, maxY, tilesX, tilesY, budget)
@@ -10,7 +11,6 @@ function TileManager:init(minX, minY, maxX, maxY, tilesX, tilesY, budget)
 	self.tilesY = tilesY
 	self.tiles = {}
 	self.budget = budget
-	self.last_tile = 1
 
 	local worldWidth = maxX - minX
 	local worldHeight = maxY - minY
@@ -21,25 +21,23 @@ function TileManager:init(minX, minY, maxX, maxY, tilesX, tilesY, budget)
 			local tileMinX = tileWorldWidth * j + minX
 			local tileMinY = tileWorldHeight * i + minY
 			self.tiles[i * tilesX + j + 1] = Tile(
-				tileMinX,
-				tileMinX + tileWorldWidth,
-				tileMinY,
-				tileMinY + tileWorldHeight
+				tileMinX - overlap,
+				tileMinX + tileWorldWidth + overlap,
+				tileMinY - overlap,
+				tileMinY + tileWorldHeight + overlap
 			)
 		end
 	end
 end
 
 function TileManager:render()
-	-- Plot mandelbrot until we reach our frame calculation budget
+	-- Update all tiles until we reach our frame calculation budget
 	cost = 0
-	while cost < self.budget and self.last_tile <= self.tilesX * self.tilesY do
-		cost += self.tiles[self.last_tile]:update() + 100
-		self.last_tile += 1
+	while cost < self.budget do	
+		for i=1,(self.tilesX * self.tilesY) do
+			cost += 1 + self.tiles[i]:update()
+		end
 	end
-	if self.last_tile > self.tilesX * self.tilesY then
-		self.last_tile = 1
-	end	
 
 	-- Draw everything to the screen
 	for i=1,(self.tilesX * self.tilesY) do

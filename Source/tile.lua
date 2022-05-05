@@ -2,9 +2,9 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 
 local gfx <const> = playdate.graphics
-local sizeX = 10
-local sizeY = 10
-local maxiteration <const> = 35
+local sizeX = 100
+local sizeY = 60
+local maxiteration <const> = 50
 
 class("Tile").extends()
 
@@ -15,7 +15,6 @@ function Tile:init(minX, maxX, minY, maxY)
 	self.maxY = maxY
 	self.buffer = gfx.image.new(sizeX, sizeY, gfx.kColorWhite)
 	self.tile_context = tile_context.new(sizeX, sizeY)
-	self.solved = false
 end
 
 function Tile:update()

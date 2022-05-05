@@ -37,10 +37,12 @@ function Camera:init(minX, minY, maxX, maxY)
 	self.maxX = maxX
 	self.minY = minY
 	self.maxY = maxY
+
+	self.screenXform = self:getScreenXform()
 end
 
 function Camera:drawTile(tile)
-	local xform = tile:getWorldXform() * self:getScreenXform()
+	local xform = tile:getWorldXform() * self.screenXform
 	tile.buffer:drawWithTransform(xform, 0, 0)
 end
 
@@ -60,6 +62,7 @@ function Camera:translate(x, y)
 	xform:translate(x, y)
 	self.minX, self.minY = xform:transformXY(self.minX, self.minY)
 	self.maxX, self.maxY = xform:transformXY(self.maxX, self.maxY)
+	self.screenXform = self:getScreenXform()
 end
 
 function Camera:scale(sx, sy)
@@ -67,4 +70,5 @@ function Camera:scale(sx, sy)
 	xform:scale(sx, sy)
 	self.minX, self.minY = xform:transformXY(self.minX, self.minY)
 	self.maxX, self.maxY = xform:transformXY(self.maxX, self.maxY)
+	self.screenXform = self:getScreenXform()
 end
