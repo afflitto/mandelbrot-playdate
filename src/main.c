@@ -93,7 +93,7 @@ static int render_region(lua_State* L)
 				iteration++;
 			}
 
-			if(iteration > threshold)
+			if(iteration > maxiteration)
 			{
 				set_pixel(data, px, py, rowbytes, 1);
 			} else {

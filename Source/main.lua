@@ -35,7 +35,7 @@ function setup()
 end
 
 function playdate.update()
-	create_tiles()
+	update_tiles()
 
 	local x = 0
 	local y = 0
@@ -93,6 +93,25 @@ function create_tiles()
 				tile_height
 			)
 			tiles[i * tiles_x + j + 1] = tile
+		end
+	end
+end
+
+function update_tiles()
+	local scaled_range_x = (max_x - min_x) / tiles_x
+	local scaled_range_y = (max_y - min_y) / tiles_y
+
+	for i=0,(tiles_x-1) do
+		for j=0,(tiles_y-1) do
+			local tile_min_x = scaled_range_x * i + min_x + offset_x
+			local tile_max_x = scaled_range_x * (i + 1) + min_x + offset_x
+			local tile_min_y = scaled_range_y * j + min_y + offset_y
+			local tile_max_y = scaled_range_y * (j + 1) + min_y + offset_y
+			local tile = tiles[i * tiles_x + j + 1]
+			tile.min_x = tile_min_x
+			tile.min_y = tile_min_y
+			tile.max_x = tile_max_x
+			tile.max_y = tile_max_y
 		end
 	end
 end
