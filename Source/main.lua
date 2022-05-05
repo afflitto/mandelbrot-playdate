@@ -6,19 +6,19 @@ local min_x = -2.00
 local max_x = 0.47
 local min_y = -1.12
 local max_y = 1.12
-local tiles_x = 4
-local tiles_y = 4
+local tiles_x = 25
+local tiles_y = 15
 local move_step <const> = 0.05
 local zoom_step <const> = 0.9
 
 local tileManager
 
 function setup()
-	playdate.graphics.setBackgroundColor(playdate.graphics.kColorBlack)
+	playdate.graphics.setBackgroundColor(playdate.graphics.kColorWhite)
 	playdate.graphics.setColor(playdate.graphics.kColorWhite)
 	playdate.display.setScale(1)
 
-	tileManager = TileManager(min_x, min_y, max_x, max_y, tiles_x, tiles_y, 100)
+	tileManager = TileManager(min_x, min_y, max_x, max_y, tiles_x, tiles_y, 50000)
 end
 setup()
 
