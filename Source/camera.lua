@@ -67,8 +67,15 @@ end
 
 function Camera:scale(sx, sy)
 	local xform = geo.affineTransform.new()
+	
+	-- center the translation on the middle of the range
+	local midX = (self.maxX + self.minX)/2
+	local midY = (self.maxY + self.minY)/2
+	xform:translate(-midX, -midY)
 	xform:scale(sx, sy)
+	xform:translate(midX, midY)
 	self.minX, self.minY = xform:transformXY(self.minX, self.minY)
 	self.maxX, self.maxY = xform:transformXY(self.maxX, self.maxY)
+
 	self.screenXform = self:getScreenXform()
 end
