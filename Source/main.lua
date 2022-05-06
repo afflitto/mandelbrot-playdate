@@ -8,7 +8,7 @@ local min_y = -1.12
 local max_y = 1.12
 local tiles_x = 4
 local tiles_y = 4
-local move_step <const> = 0.05
+local move_step = 0.1
 local zoom_step <const> = 0.95
 
 local tileManager
@@ -48,10 +48,23 @@ end
 function playdate.AButtonUp()
 	tileManager = TileManager(min_x, min_y, max_x, max_y, tiles_x, tiles_y, 500)
 end
+function playdate.BButtonUp()
+	tileManager = TileManager(
+		tileManager.minX,
+		tileManager.minY,
+		tileManager.maxX,
+		tileManager.maxY,
+		tiles_x,
+		tiles_y,
+		500
+	)
+end
 function playdate.cranked(change, accelChange)
 	if change > 0 then
 		tileManager:scale(zoom_step, zoom_step)
+		move_step *= zoom_step
 	else
 		tileManager:scale(1/zoom_step, 1/zoom_step)
+		move_step /= zoom_step
 	end
 end

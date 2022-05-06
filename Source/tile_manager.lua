@@ -2,7 +2,7 @@ import "CoreLibs/object"
 import "camera"
 import "tile"
 
-local overlap <const> = 0.01
+local overlap <const> = 0
 
 class("TileManager").extends("Camera")
 function TileManager:init(minX, minY, maxX, maxY, tilesX, tilesY, budget)
