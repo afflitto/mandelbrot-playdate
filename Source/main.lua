@@ -46,10 +46,7 @@ function playdate.downButtonUp()
 	tileManager:translate(0, move_step)
 end
 function playdate.AButtonUp()
-	tileManager:scale(zoom_step, zoom_step)
-end
-function playdate.BButtonUp()
-	tileManager:scale(1/zoom_step, 1/zoom_step)
+	tileManager = TileManager(min_x, min_y, max_x, max_y, tiles_x, tiles_y, 500)
 end
 function playdate.cranked(change, accelChange)
 	if change > 0 then

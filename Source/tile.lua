@@ -45,8 +45,10 @@ function Tile:getWorldXform()
 	local worldHeight = self.maxY - self.minY
 
 	local xform = playdate.geometry.affineTransform.new()
+	-- scale from screen size to world size
 	xform:scale(worldWidth/sizeX, worldHeight/sizeY)
-	xform:translate(self.minX, self.minY)
+	-- translate by world offset, plus size/2 because gfx draws centered
+	xform:translate(self.minX + worldWidth/2, self.minY + worldHeight/2)
 	return xform
 end
 
